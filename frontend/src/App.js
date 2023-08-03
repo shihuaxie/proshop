@@ -1,16 +1,17 @@
 import Header from "./components/Header";
 import {Container} from "react-bootstrap";
+import {Outlet} from "react-router-dom";
 import Footer from "./components/Footer";
-import HomePage from "./pages/HomePage";
+
 
 const App = () => {
     return (
         <>
             <Header/>
             <main className="py-3">
-            <Container>
-                <HomePage/>
-            </Container>
+                <Container>
+                    <Outlet/>
+                </Container>
             </main>
             <Footer/>
         </>
