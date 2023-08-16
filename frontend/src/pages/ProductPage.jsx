@@ -15,7 +15,7 @@ const ProductPage = () => {
             const{data} = await axios.get(`/api/products/${productId}`);
             setProduct(data);
         }
-        fetchProduct().then(r => console.log("error"));
+        fetchProduct();
     }, [productId]);
 
     return (
