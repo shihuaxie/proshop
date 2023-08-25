@@ -1,11 +1,26 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import Product from "../models/productModel.js";
+import User from "../models/userModel.js";
 
 //@desc   auth user and get token
 //@route  POST/api/users/login
 //@access Public
 const authUser = asyncHandler(async (req, res) => {
-    res.send('auth user');
+    // console.log(req.body);
+    const {email, password} = req.body;
+
+    const user = await User.findOne({email});
+
+    if (user && (await user.matchPassword(password))) {
+        res.json({
+            id:user._id,
+            name:user.name,
+            email:user.email,
+            isAdmin:user.isAdmin
+        });
+    }else {
+        res.status(401);
+        throw new Error('Invalid email or password');
+    }
 })
 
 //@desc   Register user
@@ -46,7 +61,7 @@ const getUsers = asyncHandler(async (req, res) => {
 //@desc    Get user by ID
 //@route   GET/api/users/:id
 //@access  Private/Admin
-const getUserByID= asyncHandler(async (req, res) => {
+const getUserByID = asyncHandler(async (req, res) => {
     res.send('get user by ID')
 })
 
@@ -60,7 +75,7 @@ const deleteUsers = asyncHandler(async (req, res) => {
 //@desc    update user
 //@route   PUT/api/users/:id
 //@access  Private/Admin
-const updateUser= asyncHandler(async (req, res) => {
+const updateUser = asyncHandler(async (req, res) => {
     res.send('update user')
 })
 
