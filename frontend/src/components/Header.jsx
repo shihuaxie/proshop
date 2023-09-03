@@ -1,7 +1,10 @@
+import {useNavigate} from "react-router-dom";
 import {Badge, Navbar, Nav, Container, NavDropdown} from "react-bootstrap";
 import {FaShoppingCart, FaUser} from "react-icons/fa";
 import {LinkContainer} from "react-router-bootstrap";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {useLogoutMutation} from "../slices/usersSliceApi";
+import {logout} from '../slices/authSlice';
 import logo from "../assets/logo.png";
 
 const Header = () => {
@@ -9,10 +12,21 @@ const Header = () => {
     const {userInfo} = useSelector((state) => state.auth);
     // console.log(cartItems);
 
-    const logoutHandler = (e) => {
-        e.preventDefault();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    }
+    const [logoutApiCall] = useLogoutMutation();
+
+    const logoutHandler = async () => {
+        try {
+            await logoutApiCall().unwrap();
+            dispatch(logout());
+            navigate('/login');
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -42,6 +56,7 @@ const Header = () => {
 
                             //dropdown menu when u login
                             {userInfo ? (
+                                <>
                                 <NavDropdown title={userInfo.name} id='username'>
                                     <linkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -50,9 +65,10 @@ const Header = () => {
                                         Logout
                                     </NavDropdown.Item>
                                 </NavDropdown>
+                                </>
                             ) : (
                                 <LinkContainer to="/login">
-                                    <Nav.Link href='/login'>
+                                    <Nav.Link>
                                         <FaUser/>Sign in
                                     </Nav.Link>
                                 </LinkContainer>
