@@ -1,5 +1,4 @@
 import express from "express";
-const router = express.Router();
 import {
     addOrderItems,
     getAllOrders,
@@ -11,6 +10,7 @@ import {
 
 import {protect, admin} from "../middleware/authMiddleware.js";
 
+const router = express.Router();
 
 router.route('/')
     .post(protect, addOrderItems)
