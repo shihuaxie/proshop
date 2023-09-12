@@ -42,29 +42,28 @@ const Header = () => {
                         <Nav className="ms-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link>
-                             <FaShoppingCart/>Cart
-                                    {
-                                        cartItems.length > 0 && (
-                                            <Badge pill bg='success' style={{
-                                                marginLeft: '5px'
-                                            }}>
-                                                {cartItems.reduce((a, c) => a + c.qty, 0)}
-                                            </Badge>
-                                        )}
+                                    <FaShoppingCart/>Cart
+                                    {cartItems.length > 0 && (
+                                        <Badge pill bg='success' style={{
+                                            marginLeft: '5px'
+                                        }}>
+                                            {cartItems.reduce((a, c) => a + c.qty, 0)}
+                                        </Badge>
+                                    )}
                                 </Nav.Link>
                             </LinkContainer>
 
-                            {/*dropdown menu when u login*/}
+                            {/* dropdown menu when you login */}
                             {userInfo ? (
                                 <>
-                                <NavDropdown title={userInfo.name} id='username'>
-                                    <linkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </linkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>
-                                        Logout
-                                    </NavDropdown.Item>
-                                </NavDropdown>
+                                    <NavDropdown title={userInfo.name} id='username'>
+                                        <LinkContainer to='/profile'>
+                                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Item onClick={logoutHandler}>
+                                            Logout
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
                                 </>
                             ) : (
                                 <LinkContainer to="/login">
