@@ -6,16 +6,18 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'uploads/')
+        cb(null, 'uploads/');
     },
     filename(req, file, cb) {
-        cb(null, `${file.filename}-${Date.now()}
-        ${path.extname(file.originalname)}`);
-    }
+        cb(
+            null,
+            `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+        );
+    },
 });
 
 function checkFileType(file, cb) {
-    const filetypes = /jpg|jpeg|png/;
+    const filetypes = /jpe?g|png|webp/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
     if (extname && mimetype) {
@@ -25,16 +27,13 @@ function checkFileType(file, cb) {
     }
 }
 
-const upload = multer({
-    storage,
-});
+const upload = multer({storage, checkFileType});
 
 router.post('/', upload.single('image'), (req, res) => {
-    res.send({
-        message: 'Image Uploaded',
-        image: `/${req.file.path}`,
+    res.status(200).send({
+        message: 'Image Uploaded Successfully',
+        image:`/${req.file.path}`,
     });
 });
-
 
 export default router;
